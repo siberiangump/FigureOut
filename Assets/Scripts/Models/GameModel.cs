@@ -12,6 +12,7 @@ public class GameModel : Singleton<GameModel> {
     [SerializeField]FigureModel[] figureSet;
 
     public FigureModel currentFigure;
+    int currentFigureIndex=0;
 
     UnityEvent changeEvent;
 	
@@ -23,7 +24,11 @@ public class GameModel : Singleton<GameModel> {
         if(Comparator.Instance.Overlap(currentFigure,drawing)>0.8f) {
             score++;
             currentFigure.DestroyMe();
-            currentFigure = CloneRandomFigure();
+            int index=Random.Range(0,figureSet.Length-1);
+            while(index==currentFigureIndex) {
+                index=Random.Range(0,figureSet.Length-1);
+            }
+            currentFigure = CloneFigureByIndex(index);
             baseTime*=Config.instance.timeDelta;
             timer = baseTime;
         };
@@ -55,7 +60,12 @@ public class GameModel : Singleton<GameModel> {
     }
 
     public FigureModel CloneRandomFigure() {
-        GameObject figure = Instantiate(figureSet[Random.Range(0,figureSet.Length-1)].gameObject,Vector3.zero,Quaternion.identity) as GameObject;
+        return CloneFigureByIndex(Random.Range(0,figureSet.Length-1));;
+    }
+
+    public FigureModel CloneFigureByIndex(int index) {
+        currentFigureIndex = index;
+        GameObject figure = Instantiate(figureSet[index].gameObject,Vector3.zero,Quaternion.identity) as GameObject;
         return figure.GetComponent<FigureModel>();
     }
    

@@ -25,7 +25,6 @@ public class Comparator : Singleton<Comparator>{
             }
             if(Physics2D.OverlapCircle(dots[i].position,radius) == figureCollider) {
                 value++;
-				Debug.Log(value);
             }
         }
 
